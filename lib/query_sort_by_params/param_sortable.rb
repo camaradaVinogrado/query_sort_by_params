@@ -9,17 +9,30 @@ module QuerySortByParams
 			def sort_by_params(params = {})
 				the_params = params.dup.with_indifferent_access
 				if the_params[:sort_by].present? && (match = the_params[:sort_by].to_s.match(/([a-zA-Z_]*)-([a-zA-Z]*)/)) && (2 < match.size)
+					@@fields_to_sort ||= {}
+					unless @@fields_to_sort.try(:[], self.to_s).present?
+						@@fields_to_sort[self.to_s] = {}.with_indifferent_access
+					end
 					matches = match.to_a
 					matched_direction = matches.pop.downcase
 					matched_field_name = matches.pop.downcase
-					field_name = self.columns_hash.keys.select { |key| key == matched_field_name }.first
 					if matched_direction == 'desc'
 						direction = 'desc'
 					else
 						direction = 'asc'
 					end
-					if field_name.present?
-						order(field_name => direction)
+
+					if @@fields_to_sort[self.to_s].key? matched_field_name
+						if @@fields_to_sort[self.to_s][matched_field_name].is_a? Proc
+							@@fields_to_sort[self.to_s][matched_field_name].call(self, direction)
+						else
+							self
+						end
+					else
+						field_name = self.columns_hash.keys.select { |key| key == matched_field_name }.first
+						if field_name.present?
+							order(field_name => direction)
+						end
 					end
 				else
 					self
