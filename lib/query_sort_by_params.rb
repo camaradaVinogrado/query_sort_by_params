@@ -8,6 +8,7 @@ module QuerySortByParams
 		module ClassMethods
 			def sort_by_params(params = {})
 				the_params = params.dup.with_indifferent_access
+				default_sort = the_params.key?(:default) ? the_params[:default] : nil
 				if the_params[:sort_by].present? && (match = the_params[:sort_by].to_s.match(/([a-zA-Z_]*)-([a-zA-Z]*)/)) && (2 < match.size)
 					@@fields_to_sort ||= {}
 					unless @@fields_to_sort.try(:[], self.to_s).present?
@@ -26,16 +27,21 @@ module QuerySortByParams
 						if @@fields_to_sort[self.to_s][matched_field_name].is_a? Proc
 							@@fields_to_sort[self.to_s][matched_field_name].call(self, direction)
 						else
-							self
+							if the_params.key? :default
+							else
+								default_sort.present? ? default_sort.call(self) : self
+							end
 						end
 					else
 						field_name = self.columns_hash.keys.select { |key| key == matched_field_name }.first
 						if field_name.present?
 							order(field_name => direction)
+						else
+							default_sort.present? ? default_sort.call(self) : self
 						end
 					end
 				else
-					self
+					default_sort.present? ? default_sort.call(self) : self
 				end
 			end
 
