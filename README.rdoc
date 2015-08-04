@@ -30,3 +30,7 @@ Or just use the fields already defined for the model:
 
   Widget.sort_by_params({:sort_by => 'name-asc'})
 
+You can set a default:
+
+  Widget.sort_by_params({:sort_by => 'name-asc'}, :default => ->(query) { query.order('created_at ASC') } )
+

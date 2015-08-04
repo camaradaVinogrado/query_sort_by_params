@@ -6,9 +6,13 @@ module QuerySortByParams
 		end
 
 		module ClassMethods
-			def sort_by_params(params = {})
+			def sort_by_params(params = {}, options = {})
 				the_params = params.dup.with_indifferent_access
-				default_sort = the_params.key?(:default) ? the_params[:default] : nil
+				if options.key? :default
+					default_sort = options[:default]
+				else
+					default_sort = the_params.key?(:default) ? the_params[:default] : nil
+				end
 				if the_params[:sort_by].present? && (match = the_params[:sort_by].to_s.match(/([a-zA-Z_]*)-([a-zA-Z]*)/)) && (2 < match.size)
 					@@fields_to_sort ||= {}
 					unless @@fields_to_sort.try(:[], self.to_s).present?

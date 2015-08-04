@@ -50,7 +50,7 @@ describe QuerySortByParams::ParamSortable do
 	end
 
 	context "when there's a default sort order" do
-		subject { Widget.sort_by_params({:sort_by => @sort_by, :default => @default}) }
+		subject { Widget.sort_by_params({:sort_by => @sort_by}, :default => @default) }
 
 		before do
 			fun_widget.owners << bob
