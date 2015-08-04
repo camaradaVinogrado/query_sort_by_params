@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150804150002) do
+ActiveRecord::Schema.define(version: 20150804165855) do
+
+  create_table "owners", force: :cascade do |t|
+    t.string   "name"
+    t.string   "occupation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "widget_owners", force: :cascade do |t|
+    t.integer  "widget_id"
+    t.integer  "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "widget_owners", ["owner_id"], name: "index_widget_owners_on_owner_id"
+  add_index "widget_owners", ["widget_id"], name: "index_widget_owners_on_widget_id"
 
   create_table "widgets", force: :cascade do |t|
     t.string   "name"
