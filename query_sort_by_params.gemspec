@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = QuerySortByParams::VERSION
   s.authors     = ["Austin Matzko"]
   s.email       = ["austin@pressedcode.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of QuerySortByParams."
-  s.description = "TODO: Description of QuerySortByParams."
+  s.homepage    = "https://github.com/matzko/query_sort_by_params"
+  s.summary     = "Allow the sorting of ActiveRecord queries by model field names and arbitrary associations"
+  s.description = "Allow the sorting of ActiveRecord queries by model field names and arbitrary associations"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]

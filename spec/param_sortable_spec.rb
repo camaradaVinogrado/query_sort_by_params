@@ -9,7 +9,7 @@ describe QuerySortByParams::ParamSortable do
 	let(:cool_widget) { create(:widget, :name => 'Cool Widget') }
 	let(:fun_widget) { create(:widget, :name => 'Fun Widget') }
 
-	subject { Widget.all.sort_by_params({:sort_by => @sort_by}) }
+	subject { Widget.sort_by_params({:sort_by => @sort_by}) }
 
 	context "when a model has a sortable field" do
 
