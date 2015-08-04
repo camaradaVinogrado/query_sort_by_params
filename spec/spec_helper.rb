@@ -4,6 +4,7 @@ Bundler.setup
 ENV['RAILS_ENV'] ||= 'test'
 
 require 'factory_girl_rails'
+require 'database_cleaner'
 
 require File.expand_path("../../spec/dummy/config/environment.rb",  __FILE__)
 ActiveRecord::Migrator.migrations_paths = [File.expand_path("../../spec/dummy/db/migrate", __FILE__)]
@@ -109,4 +110,23 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+	config.before(:suite) do
+		DatabaseCleaner.clean_with :transaction
+	end
+
+	config.before(:each) do
+		DatabaseCleaner.strategy = :transaction
+	end
+
+	config.before(:each, :js => true) do
+		DatabaseCleaner.strategy = :deletion
+	end
+
+	config.before(:each) do
+		DatabaseCleaner.start
+	end
+
+	config.after(:each) do
+		DatabaseCleaner.clean
+	end
 end
