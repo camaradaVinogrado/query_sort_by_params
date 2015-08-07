@@ -33,7 +33,7 @@ module QuerySortByParams
 						else
 							if the_params.key? :default
 							else
-								default_sort.present? ? default_sort.call(self) : self
+								default_sort.present? ? default_sort.call(self) : self.all
 							end
 						end
 					else
@@ -41,11 +41,11 @@ module QuerySortByParams
 						if field_name.present?
 							order(field_name => direction)
 						else
-							default_sort.present? ? default_sort.call(self) : self
+							default_sort.present? ? default_sort.call(self) : self.all
 						end
 					end
 				else
-					default_sort.present? ? default_sort.call(self) : self
+					default_sort.present? ? default_sort.call(self) : self.all
 				end
 			end
 
