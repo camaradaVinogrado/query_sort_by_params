@@ -6,7 +6,9 @@ module QuerySortByParams
 		end
 
 		module ClassMethods
+			require 'pry'
 			def sort_by_params(params = {}, options = {})
+				binding.pry
 				the_params = params.dup.with_indifferent_access
 				if options.key? :default
 					default_sort = options[:default]
@@ -28,6 +30,7 @@ module QuerySortByParams
 					end
 
 					if @@fields_to_sort[self.to_s].key? matched_field_name
+						binding.pry
 						if @@fields_to_sort[self.to_s][matched_field_name].is_a? Proc
 							@@fields_to_sort[self.to_s][matched_field_name].call(self, direction)
 						else
@@ -37,6 +40,7 @@ module QuerySortByParams
 							end
 						end
 					else
+						binding.pry
 						field_name = self.columns_hash.keys.select { |key| key == matched_field_name }.first
 						if field_name.present?
 							order(field_name => direction)
@@ -45,11 +49,13 @@ module QuerySortByParams
 						end
 					end
 				else
+					binding.pry
 					default_sort.present? ? default_sort.call(self) : self.all
 				end
 			end
 
 			def sort_fields(options = {})
+				binding.pry
 				@@fields_to_sort ||= {}
 				unless @@fields_to_sort.try(:[], self.to_s).present?
 					@@fields_to_sort[self.to_s] = {}.with_indifferent_access
